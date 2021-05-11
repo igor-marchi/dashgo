@@ -1,6 +1,7 @@
 import { Flex, SimpleGrid, Box, Text, theme } from '@chakra-ui/react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 
 import { Header } from '../components/Header';
 import { Sidebar } from '../components/Sidebar';
@@ -60,6 +61,10 @@ const series = [{ name: 'series1', data: [31, 120, 10, 28, 61, 18, 109] }];
 export default function deshboard() {
   return (
     <Flex direction="column" h="100vh">
+      <Head>
+        <title>Dashgo | dashboard</title>
+      </Head>
+
       <Header />
 
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
