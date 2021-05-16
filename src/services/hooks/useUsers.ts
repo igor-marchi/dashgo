@@ -1,5 +1,4 @@
-import { useQuery } from 'react-query';
-import { string } from 'yup/lib/locale';
+import { useQuery, UseQueryOptions } from 'react-query';
 import { api } from '../api';
 
 interface User {
@@ -8,9 +7,15 @@ interface User {
   email: string;
   createdAt: string;
 }
+interface GetUsersResponse {
+  users: User[];
+  totalCount: number;
+}
 
-export async function getUsers(): Promise<User[]> {
-  const { data } = await api.get('users');
+export async function getUsers(page: number): Promise<GetUsersResponse> {
+  const { data, headers } = await api.get('users', { params: { page } });
+
+  const totalCount = Number(headers['x-total-count']);
 
   const users = data.users.map((user) => ({
     id: user.id,
@@ -23,11 +28,11 @@ export async function getUsers(): Promise<User[]> {
     }),
   }));
 
-  return users;
+  return { users, totalCount };
 }
 
-export function useUsers() {
-  return useQuery('users', getUsers, {
-    staleTime: 1000 * 5, // 5s
+export function useUsers(page: number) {
+  return useQuery(['users', page], () => getUsers(page), {
+    staleTime: 1000 * 60 * 10, // 10 min
   });
 }

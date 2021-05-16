@@ -20,8 +20,6 @@ export default function SignIn() {
   });
   const { errors, isSubmitting } = formState;
 
-  console.log(errors);
-
   const handleSignIn: SubmitHandler<SignInFormData> = async (values, event) => {
     console.log(values, event);
   };
